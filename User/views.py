@@ -25,19 +25,6 @@ def login():
     return jsonify(data)
 
 
-def user_data():
-    from .db import db
-    data = db.student.find({})
-    document = []
-    for doc in data:
-        document.append(doc)
-    print(document)
-    return jsonify({
-        'status': status.HTTP_200_OK,
-        'user': document,
-    })
-
-
 def get_users():
     users = User.objects().to_json()
     return Response(users, mimetype="application/json", status=200)
@@ -45,8 +32,6 @@ def get_users():
 
 def add_user():
     try:
-        # name = request.data.get('name')
-        # department = request.data.get('department')
         body = request.get_json()
         token = flask.request.headers.get('Authorization')
 
