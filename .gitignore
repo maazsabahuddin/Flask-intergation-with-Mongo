@@ -25,3 +25,6 @@ htmlcov/
 
 mongoengineTest.py
 test.py
+
+venv37
+py3.7-env

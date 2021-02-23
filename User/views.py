@@ -6,6 +6,8 @@ from flask import jsonify, request, Response
 from flask_api import status
 from markupsafe import escape
 from .models import User
+from .dto import UserDTO
+from .seriazable import dumper
 
 
 def hello_world():
@@ -26,8 +28,15 @@ def login():
 
 
 def get_users():
-    users = User.objects().to_json()
-    return Response(users, mimetype="application/json", status=200)
+    user = User.objects(email="maazsabahuddin@gmail.com").first()
+    user_data_obj = UserDTO(user.company_name, user.email)
+    data = json.dumps(user_data_obj, default=dumper)
+    if not user:
+        return jsonify({
+            'message': 'No data'
+        })
+
+    return Response(data, mimetype="application/json", status=200)
 
 
 def add_user():
