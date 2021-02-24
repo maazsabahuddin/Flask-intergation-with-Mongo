@@ -115,9 +115,10 @@ def calc(**kwargs):
         result_dict = {'op1': op1, 'op2': op2, 'op': op, 'result': result}
         calculations.insert_one(result_dict)
 
-        query = {'last_result_code': '101'}
+        query = {'op': op}
         update_val_data = {"$set": {'op1': op1, 'op2': op2, 'op': op, 'result': result}}
         val = last_operations.update_one(query, update_val_data)
+
         if val.matched_count < 1:
             last_operations_result = {'op1': op1, 'op2': op2, 'op': op, 'result': result, 'last_result_code': '101'}
             last_operations.insert_one(last_operations_result)
