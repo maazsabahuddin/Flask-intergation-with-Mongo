@@ -32,4 +32,4 @@ def log(s):
 # print(log('hello'))   # returns "<b><i>hello</i></b>"
 
 
-print(int('10'))
+print(ord('+'))

@@ -10,8 +10,18 @@ from markupsafe import escape
 from .exception import InvalidArguments, NotANumber
 from .models import User
 from .dto import UserDTO
+from .pymongopackage import calculations, last_operations
 from functools import wraps
 from .seriazable import dumper
+
+
+def inverse(op):
+    if op == '+':
+        op = '-'
+    elif op == '-':
+        op = '+'
+
+    return op
 
 
 def calc_decorator(f):
@@ -26,12 +36,7 @@ def calc_decorator(f):
             if not op:
                 raise InvalidArguments(status_code=400, message="op argument missing.")
 
-            if op == '+':
-                op = '-'
-
-            elif op == '-':
-                op = '+'
-
+            op = inverse(op)
             return f(op=op)
 
         except InvalidArguments as e:
@@ -71,6 +76,10 @@ def calculation(**kwargs):
         return int(op1)+int(op2)
     elif op == '-':
         return int(op1)-int(op2)
+    elif op == '*':
+        return int(op1)*int(op2)
+    elif op == '-':
+        return int(op1)/int(op2)
     else:
         return None
 
@@ -95,12 +104,23 @@ def calc(**kwargs):
 
         result = None
         if op_decorator:
+            op = op_decorator
             result = calculation(op1=op1, op2=op2, op=op_decorator)
         else:
             result = calculation(op1=op1, op2=op2, op=op)
 
         if not result:
             raise NotANumber(status_code=400, message="op is not a sign.")
+
+        result_dict = {'op1': op1, 'op2': op2, 'op': op, 'result': result}
+        calculations.insert_one(result_dict)
+
+        query = {'last_result_code': '101'}
+        update_val_data = {"$set": {'op1': op1, 'op2': op2, 'op': op, 'result': result}}
+        val = last_operations.update_one(query, update_val_data)
+        if val.matched_count < 1:
+            last_operations_result = {'op1': op1, 'op2': op2, 'op': op, 'result': result, 'last_result_code': '101'}
+            last_operations.insert_one(last_operations_result)
 
         return jsonify({
             'status': 200,

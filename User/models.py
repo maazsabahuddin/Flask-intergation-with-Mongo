@@ -2,6 +2,13 @@ from .db import db
 import datetime
 
 
+class Calculations(db.Document):
+    op1 = db.StringField()
+    op2 = db.StringField()
+    op = db.StringField()
+    result = db.StringField()
+
+
 class User(db.Document):
     _id = db.ObjectIdField()
     name = db.StringField(required=True)
