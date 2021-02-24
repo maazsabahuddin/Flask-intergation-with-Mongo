@@ -1,12 +1,17 @@
 from .db import db
+import datetime
 
 
 class User(db.Document):
-    company_name = db.StringField(required=True)
+    _id = db.ObjectIdField()
+    name = db.StringField(required=True)
     phone_number = db.StringField(required=True)
-    email = db.StringField(required=True)
+    email = db.EmailField(required=True)
     is_active = db.BooleanField(default=False)
     is_admin = db.BooleanField(default=False)
+    debit = db.DecimalField()
+    credit = db.DecimalField()
+    created = db.DateTimeField(default=datetime.datetime.now())
 
 
 class Post(db.Document):

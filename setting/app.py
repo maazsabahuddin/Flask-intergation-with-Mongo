@@ -5,6 +5,7 @@ from User.db import initialize_db
 
 from User.blueprint import my_view
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'alHGkd_7j28ASDi2'
 app.register_blueprint(my_view)
 app.config['MONGODB_SETTINGS'] = {
     'host': 'mongodb://localhost/Learn',
