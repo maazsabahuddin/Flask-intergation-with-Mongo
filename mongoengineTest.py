@@ -25,10 +25,10 @@
 # #     print(update_many)
 # #
 # # except Exception as e:
-# #     print(str(e))
+# #     print(str(e)
 #
 # documents = db.student.find()
 # for i in documents:
 #     print(i)
-# # insert_many = db.student.insert_many(student_data)
+# # insert_many db.student.insert_many(student_data)
 # # print(insert_many)

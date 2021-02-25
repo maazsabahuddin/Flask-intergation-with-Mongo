@@ -32,4 +32,12 @@ def log(s):
 # print(log('hello'))   # returns "<b><i>hello</i></b>"
 
 
-print(ord('+'))
+def mymethod(**data):
+    email = data.get('email')
+    print(email)
+    for key, value in data.items():
+        print('{} - {}'.format(key, value))
+
+
+dic = {1: 2, 2: 3, 3: 4}
+mymethod(email='Maaz', age=21)
